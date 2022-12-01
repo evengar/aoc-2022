@@ -5,4 +5,6 @@ import numpy as np
 print(np.zeros(10))
 
 print(len(""))
-print(int(""))
+
+# gives an error
+# print(int(""))
