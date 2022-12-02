@@ -58,3 +58,40 @@ for move in strategy_guide:
     score += play_rps(inputs[0], inputs[1])
 
 print(score)
+
+# Part 2
+
+strategy_dict = {
+    "X": "loss",
+    "Y": "draw",
+    "Z": "win"
+}
+
+# create dict for lose conditions
+# could probably be done differently, but easier this way
+lose_dict = {
+    "rock": "paper",
+    "paper": "scissors",
+    "scissors": "rock"
+}
+
+def play_rps_smarter(opponents_input, strategy):
+    move1 = input_dict[opponents_input]
+    tactic = strategy_dict[strategy]
+
+    if tactic == "loss":
+        move2 = win_dict[move1]
+    elif tactic == "win":
+        move2 = lose_dict[move1]
+    else:
+        move2 = move1
+
+    return results_dict[tactic] + move_dict[move2]
+
+score = 0
+
+for move in strategy_guide:
+    inputs = move.strip().split(" ")
+    score += play_rps_smarter(inputs[0], inputs[1])
+
+print(score)
