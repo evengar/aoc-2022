@@ -8,3 +8,6 @@ print(len(""))
 
 # gives an error
 # print(int(""))
+
+print(3%2)
+print(4%2)
