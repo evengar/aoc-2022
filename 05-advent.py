@@ -33,10 +33,32 @@ def CrateMover9000(crates, instructions):
     for instruction in instructions:
         crates = move_crates(crates, instruction)
     return(crates)
-    
 final_crates = CrateMover9000(crates_rev, instructions)
 result = "".join([crate[-1][1] for crate in final_crates])
 print(result)
 
 # Part 2
 
+def move_crates_9001(crates, instructions):
+    n, orig, dest = parse_instructions(instructions)
+    batch = []
+    for i in range(n):
+        batch.append(crates[orig - 1][-1])
+        del crates[orig - 1][-1]
+    crates[dest - 1] += batch[::-1]
+    
+    return crates
+
+def CrateMover9001(crates, instructions):
+    for instruction in instructions:
+        crates = move_crates_9001(crates, instruction)
+    return(crates)
+
+# make new crates_rev, because apparently it's being changed by the function??
+# please help with understanding why :(
+crates_rev = [x[::-1] for x in crates]
+
+
+final_crates = CrateMover9001(crates_rev, instructions)
+result = "".join([crate[-1][1] for crate in final_crates])
+print(result)
