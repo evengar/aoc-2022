@@ -19,3 +19,19 @@ a = "abcd"
 b = "bc"
 
 print(b in a)
+
+xs = [[] for _ in range(9)]
+print(xs)
+
+for i in range(0, 36, 4):
+        xs[int(i/4)].append([i, i+1, i+2])
+for i in range(0, 36, 4):
+        xs[int(i/4)].append([i, i+1, i+2])
+print(xs)
+
+x = [1] * 6
+print(x[1::2])
+
+y = [1,2,3]
+y += [4,5,6]
+print(y)
