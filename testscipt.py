@@ -19,3 +19,5 @@ a = "abcd"
 b = "bc"
 
 print(b in a)
+
+print(sum([True, False, True]))
