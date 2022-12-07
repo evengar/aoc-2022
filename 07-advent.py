@@ -1,14 +1,8 @@
 # Part 1
 
-## Exploring example data
-
-with open("data/07-example.txt") as file:
-    example = [line.strip() for line in file.readlines()]
-
-
-
+# get structure of directories
+# and size of each directory not including subdirectories
 def map_dirs(file):
-
     current_dir = ""
     dirs = {}
     parent_dir = {}
@@ -40,19 +34,7 @@ def map_dirs(file):
 
     return (dirs, parent_dir)
 
-
-# def add_to_parent(dir, visited_dirs):
-#     if dir not in visited_dirs:
-#         visited_dirs = visited_dirs.union({dir})
-#         if parent_dir[dir] == "":
-#             return
-#         elif parent_dir[dir] == "/":
-#             dirs[parent_dir[dir]] += dirs[dir]
-#         else:
-#             dirs[parent_dir[dir]] += dirs[dir]
-
-#             add_to_parent(parent_dir[dir], visited_dirs)
-
+# get sizes of child directories
 def child_sums(dir, dirs, parent_dir):
     child_sum = 0
     for current_dir in dirs:
@@ -61,9 +43,7 @@ def child_sums(dir, dirs, parent_dir):
     return(child_sum)
 
 
- 
-dirs, parent_dir = map_dirs(example)
-
+# map directories and add child sizes
 def dir_sizes(file):
     dirs, parent_dir = map_dirs(file)
     
@@ -71,17 +51,24 @@ def dir_sizes(file):
         dirs[dir] += child_sums(dir, dirs, parent_dir)
     return(dirs)
 
+## Test with example data
+with open("data/07-example.txt") as file:
+    example = [line.strip() for line in file.readlines()]
+
 sizes = [value for value in dir_sizes(example).values() if value < 100000]
 print(sum(sizes))
 
-
-
-
-
-# real data:
+# full input data
 with open("data/07-input.txt") as file:
     commands = [line.strip() for line in file.readlines()]
-sizes = [value for value in dir_sizes(commands).values() if value < 100000]
-print(sum(sizes))
+sizes = dir_sizes(commands)
+sizes_thresh = [value for value in sizes.values() if value < 100000]
+print(sum(sizes_thresh))
 
 # Part 2:
+
+total_size = sizes["/"]
+delete = 30000000 + total_size - 70000000
+
+candidate_dirs = [value for value in sizes.values() if value > delete]
+print(min(candidate_dirs))
