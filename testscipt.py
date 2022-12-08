@@ -38,3 +38,6 @@ y = [1,2,3]
 y += [4,5,6]
 print(y)
 
+x = np.arange(10)
+print(any(x > 5))
+print(np.max(np.where(x > 5)))
