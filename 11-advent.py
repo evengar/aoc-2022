@@ -49,18 +49,18 @@ class Monkey:
         self.items.pop()
         self.monkeybusiness += 1
         
-    def item_value_new(self, old):
+    def item_value_new(self, old, prime_prod):
         result = eval(self.operation)
-        return result % self.modulus
+        return result % prime_prod
     
-    def throw_dest_new(self, item):
-        if self.item_value_new(item) == 0:
+    def throw_dest_new(self, item, prime_prod):
+        if self.item_value_new(item, prime_prod) % self.modulus == 0:
             return self.monkey_if
         else:
             return self.monkey_else
     
-    def throw_item_new(self, receiving_monkey):
-        item = self.item_value_new(self.items[-1])
+    def throw_item_new(self, receiving_monkey, prime_prod):
+        item = self.item_value_new(self.items[-1], prime_prod)
         receiving_monkey.catch_item(item)
         self.items.pop()
         self.monkeybusiness += 1
@@ -109,44 +109,39 @@ print(final_monkeybusiness[-1] * final_monkeybusiness[-2])
 
 # part 2
 
-def inspect_monkeybusiness_new(monkey_list):
+def inspect_monkeybusiness_new(monkey_list, prime_prod):
     for monkey in monkey_list:
         while len(monkey.items) > 0:
             item = monkey.items[-1]
-            receiving_monkey = monkey_list[monkey.throw_dest_new(item)]
-            monkey.throw_item_new(receiving_monkey)
+            receiving_monkey = monkey_list[monkey.throw_dest_new(item, prime_prod)]
+            monkey.throw_item_new(receiving_monkey, prime_prod)
+
+def get_prime_prod(monkey_list):
+    prod = 1
+    for monkey in monkey_list:
+        prod *= monkey.modulus
+    return prod
 
 ex_monkey_list = [Monkey_from_text(monkey) for monkey in example_monkeys]
 
-# for i in range(10000):
-#     inspect_monkeybusiness_new(ex_monkey_list)
+ex_prime_prod = get_prime_prod(ex_monkey_list)
 
 
-print([monkey.monkeybusiness for monkey in ex_monkey_list])
+for i in range(10000):
+    inspect_monkeybusiness_new(ex_monkey_list, ex_prime_prod)
 
+ex_business = [monkey.monkeybusiness for monkey in ex_monkey_list]
+ex_business.sort()
+print(ex_business[-1]*ex_business[-2])
 
-# this is why it's wrong
-orig = 1501
+#with full input
 
+monkey_list = [Monkey_from_text(monkey) for monkey in monkeys]
+prime_prod = get_prime_prod(monkey_list)
+for i in range(10000):
+    inspect_monkeybusiness_new(monkey_list, prime_prod)
 
-print((1501) % 23) # 6
-print((1501 + 3) % 13) #9
-print(((1501%13) + 3) % 13) #9
-print((1501 + 3 + 6) % 19)
-print(1501%19)
-print((3 + 6) % 19)
-
-print(1500 % 19, (1500 % 19) % 19)
-print(1500 % 19, (1500 % 19) % 19)
-
-
-print()
-
-
-
-# print((1501 * 1501)%23)
-# print((6*6) % 23)
-# for i in range(10000):
-#     inspect_monkeybusiness(ex_monkey_list)
-
-# print([monkey.monkeybusiness for monkey in monkey_list])
+too_much_monkey_business = [monkey.monkeybusiness for monkey in monkey_list]
+too_much_monkey_business.sort()
+print(too_much_monkey_business)
+print(too_much_monkey_business[-1] * too_much_monkey_business[-2])
