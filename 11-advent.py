@@ -1,18 +1,6 @@
 # Part 1
 
-with open("data/11-example.txt") as f:
-    input_data = [line.strip() for line in f.readlines()]
-    example_monkeys = [input_data[i:i+5] for i in range(1, len(input_data), 7)]
 
-with open("data/11-input.txt") as f:
-    input_data = [line.strip() for line in f.readlines()]
-    monkeys = [input_data[i:i+5] for i in range(1, len(input_data), 7)]
-
-print(monkeys)
-expr = monkeys[0][1].split("= ")[1]
-old = 2
-print(eval(expr))
-print([int(item) for item in monkeys[0][0].split(": ")[1].split(", ")])
 
 
 class Monkey:
@@ -48,7 +36,12 @@ class Monkey:
         receiving_monkey.catch_item(item)
         self.items.pop()
         self.monkeybusiness += 1
-        
+    
+    # new methods for part 2!
+    # if the number is larger than the product of all
+    # moduli (all primes), reduce the number by that product
+    # new methods should also work for part 1
+    
     def item_value_new(self, old, prime_prod):
         result = eval(self.operation)
         return result % prime_prod
@@ -73,13 +66,6 @@ def Monkey_from_text(text):
     monkey_else = int(text[4].split("monkey ")[1])
     return Monkey(starting_items, operation, modulus, monkey_if, monkey_else)
 
-testmonkey1 = Monkey_from_text(monkeys[0])
-testmonkey2 = Monkey_from_text(monkeys[1])
-print(testmonkey1)
-testmonkey1.throw_item(testmonkey2)
-print(testmonkey1.items)
-print(testmonkey2.items)
-
 def inspect_monkeybusiness(monkey_list):
     for monkey in monkey_list:
         while len(monkey.items) > 0:
@@ -87,15 +73,13 @@ def inspect_monkeybusiness(monkey_list):
             receiving_monkey = monkey_list[monkey.throw_dest(item)]
             monkey.throw_item(receiving_monkey)
 
+with open("data/11-example.txt") as f:
+    input_data = [line.strip() for line in f.readlines()]
+    example_monkeys = [input_data[i:i+5] for i in range(1, len(input_data), 7)]
 
-
-ex_monkey_list = [Monkey_from_text(monkey) for monkey in example_monkeys]
-print([monkey.items for monkey in ex_monkey_list])
-example_round = inspect_monkeybusiness(ex_monkey_list)
-print([monkey.items for monkey in ex_monkey_list])
-
-#print([monkey.monkeybusiness for monkey in inspect_monkeybusiness(ex_monkey_list)])
-
+with open("data/11-input.txt") as f:
+    input_data = [line.strip() for line in f.readlines()]
+    monkeys = [input_data[i:i+5] for i in range(1, len(input_data), 7)]
 
 monkey_list = [Monkey_from_text(monkey) for monkey in monkeys]
 
@@ -125,7 +109,6 @@ def get_prime_prod(monkey_list):
 ex_monkey_list = [Monkey_from_text(monkey) for monkey in example_monkeys]
 
 ex_prime_prod = get_prime_prod(ex_monkey_list)
-
 
 for i in range(10000):
     inspect_monkeybusiness_new(ex_monkey_list, ex_prime_prod)
